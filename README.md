@@ -2,28 +2,30 @@
 
 This repository provides a turnkey setup for a tiling window manager, status bar, and related tools on Windows. It includes:
 
-- **PowerShell installer script** (`install-dotfiles.ps1`)  
-- **Komorebi** layout configuration (`komorebi.json`) 
-- **YASB** status-bar config (`config.yaml`) 
-- **WHKD** hotkey daemon config (`whkdrc`)  
-- **Custom CSS** for YASB styling (`styles.css`)  
+* **PowerShell installer script** (`install-dotfiles.ps1`)
+* **Komorebi** layout configuration (`komorebi.json`)
+* **YASB** status-bar config (`config.yaml`)
+* **WHKD** hotkey daemon config (`whkdrc`)
+* **Custom CSS** for YASB styling (`styles.css`)
+* **Application launcher definitions** (`applications.yaml`, `applications.json`)
 
 ---
 
 ## Prerequisites
 
-- **Windows 10 or 11**  
-- **[WinGet](https://docs.microsoft.com/windows/package-manager/winget/)** (comes with recent Windows versions)  
-- **PowerShell 7+** (for running the installer script)
+* **Windows 10 or 11**
+* **[WinGet](https://docs.microsoft.com/windows/package-manager/winget/)** (included in recent Windows versions)
+* **PowerShell 7+** (for running the installer script)
 
 ---
 
 ## Installation
 
-1. **Clone the repo**  
+1. **Clone the repo**
+
    ```powershell
    git clone https://github.com/shaikhshp/win-dotfiles.git
-   cd windows-dotfiles
+   cd win-dotfiles
    ```
 
 2. **Run the installer**
@@ -32,7 +34,7 @@ This repository provides a turnkey setup for a tiling window manager, status bar
    .\install-dotfiles.ps1
    ```
 
-   This script will:
+   The script will:
 
    * Install JetBrainsMono Nerd Font
    * Install LibreHardwareMonitor
@@ -40,38 +42,39 @@ This repository provides a turnkey setup for a tiling window manager, status bar
    * Install YASB
    * Install Komorebi
    * Move `komorebi.json`, `applications.yaml`, and `applications.json` → `~\.config`
-   * Delete & replace `config.yaml` and `style.css` in `~\.config\yasb\`
-   * Move `whkdrc` → `~\.config\whkdrc`
+   * Delete & replace `config.yaml`, move `styles.css` → `~\.config\yasb`
+   * Move `whkdrc` → `~\.config`
 
-3. **Start your environment**
+3. **Launch your setup**
 
-   * Launch **Komorebi** (e.g. via your Start menu or run `komorebic start --whkd`)
-   * Launch **YASB** (`yasb`)
+   * Start **LibreHardwareMonitor** (`librehardwaremonitor`) and start Remote Web Server (Options, Remote Web Server, Run)
+   * Start **Komorebi** (e.g., via Start menu or `komorebic start --whkd`)
+   * Start **YASB** (`yasb`)
 
 ---
 
 ## File Descriptions
 
-| File                   | Purpose                                                                    |
-| ---------------------- | -------------------------------------------------------------------------- |
-| `install-dotfiles.ps1` | PowerShell script to install tools via WinGet and deploy your config files |
-| `komorebi.json`        | Komorebi tiling-WM configuration (workspaces, border, theme)               |
-| `config.yaml`          | Main YASB status-bar configuration (bars, widgets, Komorebi integration)   |
-| `whkdrc`               | WHKD hotkey definitions (key bindings for window management)               |
-| `styles.css`           | CSS overrides for YASB styling (colors, fonts, padding)                    |
+| File                   | Purpose                                                      |
+| ---------------------- | ------------------------------------------------------------ |
+| `install-dotfiles.ps1` | Installer script (WinGet + config deployment)                |
+| `komorebi.json`        | Komorebi tiling window manager layout                        |
+| `config.yaml`          | YASB status-bar configuration                                |
+| `styles.css`           | Custom CSS overrides for YASB styling                        |
+| `whkdrc`               | WHKD hotkey definitions                                      |
+| `applications.yaml`    | Application launcher entries (YASB widget/Komorebi mappings) |
+| `applications.json`    | Same launcher definitions in JSON format                     |
 
 ---
 
 ## Customization
 
-* **Workspaces & Layouts**
-  Adjust `komorebi.json` to add/remove workspaces or change tiling layouts.
-* **Status-Bar Widgets**
-  Tweak `config.yaml` to enable/disable widgets, change intervals, labels, or callbacks.
-* **Styling**
-  Modify `styles.css` for font sizes, colors, or widget padding.
+* **Workspaces & Layouts**: Edit `komorebi.json` to adjust workspace names, layouts, and themes.
+* **Widgets & Commands**: Tweak `config.yaml` to configure widgets, polling intervals, and commands.
+* **Harware Monitoring** Update sensor IDs in `config.yaml` for your hardware.
+* **Styling**: Modify `styles.css` for font sizes, colors, and padding.
 
-After making changes, restart Komorebi and YASB:
+After changes, reload:
 
 ```powershell
 komorebic reload --whkd
@@ -82,12 +85,6 @@ yasb --reload
 
 ## Troubleshooting
 
-* **Script Errors**
-  Ensure PowerShell is running as Administrator and that WinGet is up to date.
-* **Missing Fonts or Icons**
-  Confirm JetBrainsMono Nerd Font installed successfully via Settings → Fonts.
-* **Widgets Not Showing**
-  Check that `~\.config\yasb\config.yaml` exists and is valid YAML. Run `yasb --debug` for logs.
-
----
-
+* **Permissions**: Run PowerShell as Administrator to ensure WinGet installs correctly.
+* **Font Issues**: Check Windows Font settings to verify JetBrainsMono Nerd Font installation.
+* **YASB Errors**: Ensure `~\.config\yasb\config.yaml` and `styles.css` exist and contain valid YAML/CSS. Use `yasb --debug` for logs.

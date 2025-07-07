@@ -66,4 +66,20 @@ if (Test-Path ".\styles.css") {
     Write-Warning "styles.css not found in repo root."
 }
 
+# 11. Move applications.yaml into ~/.config/
+if (Test-Path ".\applications.yaml") {
+    Move-Item ".\applications.yaml" $configDir -Force
+    Write-Host "Moved applications.yaml to $configDir"
+} else {
+    Write-Warning "applications.yaml not found in repo root."
+}
+
+# 12. Move applications.json into ~/.config/
+if (Test-Path ".\applications.json") {
+    Move-Item ".\applications.json" $configDir -Force
+    Write-Host "Moved applications.json to $configDir"
+} else {
+    Write-Warning "applications.json not found in repo root."
+}
+
 Write-Host "Setup complete."
