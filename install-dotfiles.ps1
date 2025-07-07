@@ -43,11 +43,11 @@ if (Test-Path $yasbConfig) {
     Remove-Item $yasbConfig -Force
     Write-Host "Deleted existing $yasbConfig"
 }
-if (Test-Path ".\config.yaml") {
-    Move-Item ".\config.yaml" $yasbDir -Force
+if (Test-Path ".\yasb\config.yaml") {
+    Move-Item ".\yasb\config.yaml" $yasbDir -Force
     Write-Host "Moved config.yaml to $yasbDir"
 } else {
-    Write-Warning "config.yaml not found in repo root."
+    Write-Warning "config.yaml not found in .\yasb."
 }
 
 # 9. Move whkdrc into ~/.config/
@@ -59,11 +59,11 @@ if (Test-Path ".\whkdrc") {
 }
 
 # 10. Move styles.css into ~/.config/yasb/
-if (Test-Path ".\styles.css") {
-    Move-Item ".\styles.css" $yasbDir -Force
+if (Test-Path ".\yasb\styles.css") {
+    Move-Item ".\yasb\styles.css" $yasbDir -Force
     Write-Host "Moved styles.css to $yasbDir"
 } else {
-    Write-Warning "styles.css not found in repo root."
+    Write-Warning "styles.css not found in .\yasb."
 }
 
 # 11. Move applications.yaml into ~/.config/
