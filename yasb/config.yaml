@@ -1,0 +1,919 @@
+# YASB configuration
+# Author: Sulaiman Shaikh
+
+# Requirements
+# - YASB
+# - Komorebi
+# - WHKD
+# - Nerd Font (Preferably JetBrains Mono)
+# - LibreHardwareMonitor (Running with remote server enabled)
+
+watch_stylesheet: true
+watch_config: true
+debug: true
+komorebi:
+  start_command: "komorebic start --whkd"
+  stop_command: "komorebic stop --whkd"
+  reload_command: "komorebic stop --whkd && komorebic start --whkd"
+bars:
+  primary-bar:
+    enabled: true
+    screens: ["*"]
+    class_name: "yasb-bar"
+    alignment:
+      position: "top"
+      center: false
+    blur_effect:
+      enabled: true
+      acrylic: false
+      dark_mode: true
+      round_corners: true
+      border_color: System
+    window_flags:
+      always_on_top: false
+      windows_app_bar: true
+    dimensions:
+      width: "100%"
+      height: 32
+    padding:
+      top: 4
+      left: 6
+      bottom: 0
+      right: 6
+    widgets:
+      left: ["active_window"]
+      center: ["win_button", "clock", "apps"]
+      right: [
+          "update",
+          "systray",
+          "weather",
+          "whkd",
+          "brightness",
+          "bluetooth",
+          "wifi",
+          "microphone",
+          "volume",
+          # "power_plan",
+          "battery",
+          "power_menu"
+        ]
+  secondary-bar:
+    enabled: true
+    screens: ["*"]
+    class_name: "yasb-bar"
+    alignment:
+      position: "bottom"
+      center: false
+    blur_effect:
+      enabled: true
+      acrylic: false
+      dark_mode: true
+      round_corners: true
+      border_color: System
+    window_flags:
+      always_on_top: false
+      windows_app_bar: true
+    dimensions:
+      width: "100%"
+      height: 32
+    padding:
+      top: 0
+      left: 6
+      bottom: 4
+      right: 6
+    widgets:
+      left: ["komorebi_control", "komorebi_active_layout", "komorebi_stack", "komorebi_workspaces", "taskbar", "media"]
+      center: []
+      right: ["traffic", "libre_gpu_load", "libre_gpu", "memory", "cpu", "libre_cpu", "disk"]
+widgets:
+  update:
+    type: "yasb.update_check.UpdateCheckWidget"
+    options:
+      winget_update:
+        enabled: true
+        label: "<span>\uf0ab</span>{count}"
+        interval: 30
+        exclude: []
+      windows_update:
+        enabled: true
+        label: "<span>\uf0ab</span>{count}"
+        interval: 240
+        exclude: []
+  media:
+    type: "yasb.media.MediaWidget"
+    options:
+      label: "{title} - {artist}"
+      label_alt: "{title}"
+      hide_empty: true
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "do_nothing"
+      max_field_size:
+        label: 20
+        label_alt: 30
+      show_thumbnail: true
+      controls_only: false
+      controls_left: true
+      controls_hide: false
+      thumbnail_alpha: 80
+      thumbnail_padding: 8
+      thumbnail_corner_radius: 16
+      icons:
+        prev_track: "\ue892"
+        next_track: "\ue893"
+        play: "\ue768"
+        pause: "\ue769"
+      media_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        thumbnail_corner_radius: 8
+        thumbnail_size: 120
+        max_title_size: 80
+        max_artist_size: 20
+        show_source: true
+      media_menu_icons:
+        play: "\ue768"
+        pause: "\ue769"
+        prev_track: "\ue892"
+        next_track: "\ue893"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  active_window:
+    type: "yasb.active_window.ActiveWindowWidget"
+    options:
+      label: "{win[title]}"
+      label_alt: "[class_name='{win[class_name]}' exe='{win[process][name]}' hwnd={win[hwnd]}]"
+      label_no_window: ""
+      label_icon: true
+      label_icon_size: 14
+      max_length: 56
+      max_length_ellipsis: "..."
+      monitor_exclusive: false
+  clock:
+    type: "yasb.clock.ClockWidget"
+    options:
+      label: "{%a, %d %b %H:%M}"
+      label_alt: "{%A, %d %B %Y %H:%M:%S}"
+      timezones: []
+  komorebi_workspaces:
+    type: "komorebi.workspaces.WorkspaceWidget"
+    options:
+      label_offline: "Komorebi Offline"
+      label_workspace_btn: "\udb81\udc3d"
+      label_workspace_active_btn: "\udb81\udc3e"
+      label_workspace_populated_btn: "\udb81\udc3e"
+      label_default_name: ""
+      label_zero_index: false
+      hide_empty_workspaces: false
+      hide_if_offline: false
+      animation: true
+      toggle_workspace_layer:
+        enabled: false
+        tiling_label: "Tiling"
+        floating_label: "Floating"
+      app_icons: 
+        enabled_populated: false
+        enabled_active: false
+        size: 12
+        max_icons: 0
+        hide_label: false
+        hide_duplicates: false
+        hide_floating: false
+      container_padding: 
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      btn_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  komorebi_active_layout:
+    type: "komorebi.active_layout.ActiveLayoutWidget"
+    options:
+      hide_if_offline: true
+      label: "{icon} {layout_name}"
+      layouts: ['bsp', 'columns', 'rows', 'grid', 'scrolling', 'vertical_stack', 'horizontal_stack', 'ultrawide_vertical_stack','right_main_vertical_stack']
+      layout_icons:
+        bsp: "\uebeb"
+        columns: "\uebf7"
+        rows: "\uec01"
+        grid: "\udb81\udf58"
+        scrolling: "\uebf7"
+        vertical_stack: "\uebee"
+        horizontal_stack: "\uebf0"
+        ultrawide_vertical_stack: "\uebee"
+        right_main_vertical_stack: "\uebf1"
+        monocle: "\uf06f"
+        maximised: "\uf06f"
+        floating: "\uf2d2"
+        paused: "\udb83\udf89"
+        tiling: "\udb81\ude40"
+      callbacks:
+        on_left: 'toggle_layout_menu'
+        on_middle: 'next_layout'
+        on_right: 'prev_layout'
+      layout_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "left"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        show_layout_icons: true
+      container_padding: 
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  weather:
+    type: "yasb.weather.WeatherWidget"
+    options:
+      label: "<span>{icon}</span> {temp}"
+      label_alt: "{location}: Min {min_temp}, Max {max_temp}, Humidity {humidity}"
+      api_key: "3bf4cf9a7c3f40d6b31174128242807" # Get your free API key from https://www.weatherapi.com/
+      show_alerts: true
+      update_interval: 300 # Update interval in seconds, Min 600 seconds
+      hide_decimal: true
+      units: "metric" # Can be 'metric' or 'imperial'
+      location: "USA Atlanta 30022" # You can use "USA Los Angeles 90006" {COUNTRY CITY ZIP_CODE}, or just city.
+      callbacks:
+        on_left: "toggle_card"
+        on_middle: "do_nothing"
+        on_right: "toggle_label"
+      icons:
+        sunnyDay: "\ue30d"
+        clearNight: "\ue32b"
+        cloudyDay: "\ue312"
+        cloudyNight: "\ue311"
+        rainyDay: "\ue308"
+        rainyNight: "\ue333"
+        snowyIcyDay: "\ue30a"
+        snowyIcyNight: "\ue335"
+        blizzardDay: "\udb83\udf36"
+        blizzardNight: "\udb83\udf36"
+        foggyDay: "\ue303"
+        foggyNight: "\ue346"
+        thunderstormDay: "\ue30f"
+        thunderstormNight: "\ue338"
+        default: "\uebaa"
+      weather_card:
+        blur: True
+        round_corners: True
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "right"
+        direction: "down"
+        icon_size: 64
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+        # https://www.weatherapi.com/docs/
+        # Usage {temp_c}, {min_temp_c}, {max_temp_c}, {temp_f}, {min_temp_f}, {max_temp_f}, {location}, {humidity}, {icon}, {conditions}
+  volume:
+    type: "yasb.volume.VolumeWidget"
+    options:
+      label: "<span>{icon}</span> {level}"
+      label_alt: "{volume}"
+      volume_icons:
+        - "\ueee8" # Icon for muted
+        - "\uf026" # Icon for 0-10% volume
+        - "\uf027" # Icon for 11-30% volume
+        - "\uf027" # Icon for 31-60% volume
+        - "\uf028" # Icon for 61-100% volume
+      callbacks:
+        on_right: "exec cmd.exe /c start ms-settings:sound"
+  power_menu:
+    type: "yasb.power_menu.PowerMenuWidget"
+    options:
+      label: "\uf011"
+      uptime: True
+      blur: False
+      blur_background: True
+      animation_duration: 200 # Milisecond
+      button_row: 5 # Number of buttons in row, min 1 max 5
+      buttons:
+        shutdown: ["\uf011", "Shut Down"]
+        restart: ["\uead2", "Restart"]
+        signout: ["\udb80\udf43", "Sign out"]
+        hibernate: ["\uf28e", "Hibernate"]
+        sleep: ["\u23fe", "Sleep"]
+        cancel: ["", "Cancel"]
+  apps:
+    type: "yasb.applications.ApplicationsWidget"
+    options:
+      container_padding:
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      label: "{data}"
+      app_list:
+        - { icon: "\uf0a2", launch: "notification_center" }
+        - { icon: "\uf422", launch: "launcher" }
+        - { icon: "\ueb03", launch: "cmd /c Taskmgr" }
+        - { icon: "\uf489", launch: "wt" }
+        # - { icon: "\udb84\udec7", launch: "C:\\Program Files\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE" }
+        # - { icon: "\uf1ff",launch: "C:\\Users\\amn\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe" }
+        - { icon: "\udb82\ude1e",launch: "C:\\Users\\amn\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe" }
+  taskbar:
+    type: "yasb.taskbar.TaskbarWidget"
+    options:
+      animation: true
+      icon_size: 16
+      ignore_apps:
+        processes: []
+        titles: []
+        classes: []
+      container_padding:
+        top: 0
+        left: 0
+        bottom: 0
+        right: 0
+  whkd:
+    type: "yasb.whkd.WhkdWidget"
+    options:
+      label: "<span>\uf11c</span>"
+  obs:
+    type: "yasb.obs.ObsWidget"
+    options:
+      connection:
+        host: "192.168.1.2"
+        port: 4455
+        password: "123456"
+      icons:
+        recording: "\ueba7"
+        stopped: "\ueba5"
+        paused: "\ueba7"
+      hide_when_not_recording: true
+      blinking_icon: true
+  bluetooth:
+    type: "yasb.bluetooth.BluetoothWidget"
+    options:
+      label: "<span>{icon}</span> {device_count}"
+      label_alt: "{device_name}"
+      label_no_device: "No devices connected"
+      label_device_separator: ", "
+      max_length: 10
+      max_length_ellipsis: "..."
+      icons: 
+        bluetooth_on: "\udb80\udcaf"
+        bluetooth_off: "\udb80\udcb2"
+        bluetooth_connected: "\udb80\udcb1"
+      device_aliases:
+        - name: "T5.0"
+          alias: "\uf025"
+      callbacks:
+        on_left: "toggle_label"
+        on_right: "exec cmd.exe /c start ms-settings:bluetooth"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  battery:
+    type: "yasb.battery.BatteryWidget"
+    options:
+      label: "<span>{icon}</span> {percent}%"
+      label_alt: "<span>{icon}</span> {percent}% | time: {time_remaining}"
+      update_interval: 5000
+      time_remaining_natural: False
+      # hide_unsupported': True
+      charging_options:
+        icon_format: "{charging_icon}"
+        blink_charging_icon: true
+        blink_interval: 500
+      status_thresholds:
+        critical: 10
+        low: 25
+        medium: 75
+        high: 95
+        full: 100
+      status_icons:
+        icon_charging: "\uf0e7"
+        icon_critical: "\uf244"
+        icon_low: "\uf243"
+        icon_medium: "\uf242"
+        icon_high: "\uf241"
+        icon_full: "uf240"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  brightness:
+    type: "yasb.brightness.BrightnessWidget"
+    options:
+      label: "<span>{icon}</span>"
+      label_alt: "Brightness {percent}%"
+      tooltip: true
+      hide_unsupported: true
+      brightness_toggle_level: [0, 50, 100]
+      auto_light: false
+      auto_light_icon: "\udb80\udce1"
+      auto_light_night_level: 35
+      auto_light_night_start_time: "19:00"
+      auto_light_night_end_time: "06:45"
+      auto_light_day_level: 75
+      brightness_icons: [
+        "\udb80\udcde",  # Icon for 0-25% brightness
+        "\udb80\udcdd",  # Icon for 26-50% brightness
+        "\udb80\udcdf",  # Icon for 51-75% brightness
+        "\udb80\udce0"   # Icon for 76-100% brightness
+      ]
+      brightness_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "right"
+        direction: "down"
+      callbacks:
+          on_left: "toggle_label"
+      container_padding:
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  cpu:
+    type: "yasb.cpu.CpuWidget"
+    options:
+      label: "<span>\uf4bc</span> {info[percent][total]}%"
+      label_alt: "<span>\uf437</span> {info[histograms][cpu_percent]}"
+      update_interval: 2000
+      histogram_icons:
+        - '\u2581' # 0%
+        - '\u2581' # 10%
+        - '\u2582' # 20%
+        - '\u2583' # 30%
+        - '\u2584' # 40%
+        - '\u2585' # 50%
+        - '\u2586' # 60%
+        - '\u2587' # 70%
+        - '\u2588' # 80%+
+      histogram_num_columns: 8
+      callbacks:
+        on_right: "exec cmd /c Taskmgr"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  power_plan:
+    type: "yasb.power_plan.PowerPlanWidget"
+    options:
+      label: "<span>\uf0e7</span> {active_plan}"
+      label_alt: "<span>\uf0e7</span> Power Plan {active_plan}"
+      update_interval: 5000
+      menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "center"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+      container_padding:
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      callbacks:
+        on_left: "toggle_menu"
+        on_middle: "do_nothing"
+        on_right: "toggle_label"
+      label_shadow:
+        enabled: true
+        color: "black"
+        offset: [1, 1]
+        radius: 3
+      container_shadow:
+        enabled: true
+        color: "#000000"
+        offset: [0, 1]
+        radius: 2
+  memory:
+    type: "yasb.memory.MemoryWidget"
+    options:
+      label: "<span>\uefc5</span> {virtual_mem_free}/{virtual_mem_total}"
+      label_alt: "<span>\uefc5</span> VIRT: {virtual_mem_percent}% SWAP: {swap_mem_percent}%"
+      update_interval: 5000
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "do_nothing"
+      memory_thresholds:
+        low: 25
+        medium: 50
+        high: 90
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  traffic:
+    type: "yasb.traffic.TrafficWidget"
+    options:
+      label: "\ueb01 \ueab4 {download_speed} | \ueab7 {upload_speed}"
+      label_alt: "Download {download_speed} | Upload {upload_speed}"
+      update_interval: 1000
+      menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "left"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+      callbacks:
+        on_left: "toggle_menu"
+        on_right: "toggle_label"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  systray:
+    type: "yasb.systray.SystrayWidget"
+    options:
+      class_name: "systray"
+      label_collapsed: "▼"
+      label_expanded: "▶"
+      label_position: "left" # Can be "left" or "right"
+      icon_size: 16 # Can be any integer between 8 and 64
+      pin_click_modifier: "alt" # Can be "ctrl", "alt" or "shift"
+      show_unpinned: true
+      show_unpinned_button: true
+      show_battery: false
+      show_volume: false
+      show_network: false
+      container_padding:
+          left: 0
+          top: 0
+          right: 0
+          bottom: 0
+      btn_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  disk:
+    type: "yasb.disk.DiskWidget"
+    options:
+        label: "{volume_label} {space[used][percent]}"
+        label_alt: "{volume_label} {space[used][gb]} / {space[total][gb]}"
+        volume_label: "C"
+        update_interval: 60
+        group_label:
+          volume_labels: ["C", "D", "E", "F"]
+          show_label_name: true
+          blur: True
+          round_corners: True
+          round_corners_type: "small"
+          border_color: "System"
+          alignment: "right"
+          direction: "down"
+        callbacks:
+          on_left: "toggle_group"
+          on_middle: "toggle_label"
+          on_right: "exec explorer C:\\" # Open disk C in file explorer
+        label_shadow:
+          enabled: true
+          color: "black"
+          radius: 3
+          offset: [ 1, 1 ]
+  wifi:
+    type: "yasb.wifi.WifiWidget"
+    options:
+      label: "<span>{wifi_icon}</span>"
+      label_alt: "{wifi_name} {wifi_strength}%"
+      update_interval: 5000
+      callbacks:
+        on_left: "exec cmd.exe /c start ms-settings:network"
+        on_middle: "do_nothing"
+        on_right: "toggle_label"
+      ethernet_label: "<span>{wifi_icon}</span>"
+      ethernet_label_alt: "<span>{wifi_icon}</span>{ip_addr}"
+      ethernet_icon: "\ueba9"
+      wifi_icons: [
+        "\udb82\udd2e",  # Icon for 0% strength
+        "\udb82\udd1f",  # Icon for 1-24% strength
+        "\udb82\udd22",  # Icon for 25-49% strength
+        "\udb82\udd25",  # Icon for 50-74% strength
+        "\udb82\udd28"   # Icon for 75-100% strength
+      ]
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  komorebi_control:
+      type: "komorebi.control.KomorebiControlWidget"
+      options:
+        label: "<span>\udb80\uddd9</span>"
+        icons:
+          start: "\uead3"
+          stop: "\uead7"
+          reload: "\uead2"
+        run_ahk: false
+        run_whkd: true
+        show_version: true
+        komorebi_menu:
+          blur: True
+          round_corners: True
+          round_corners_type: 'normal'
+          border_color: 'System'
+          alignment: 'left'
+          direction: 'down'
+          offset_top: 6
+          offset_left: 0
+        label_shadow:
+          enabled: true
+          color: "black"
+          radius: 3
+          offset: [ 1, 1 ]
+  komorebi_stack:
+    type: "komorebi.stack.StackWidget"
+    options:
+      label_offline: "Offline"
+      label_window: "{process}"
+      label_window_active: "{title}"
+      label_no_window: "No Window"
+      label_zero_index: false
+      show_icons: "always"
+      icon_size: 14
+      max_length: 10
+      max_length_active: 20
+      max_length_ellipsis: ".."
+      hide_if_offline: false
+      show_only_stack: false
+      animation: true
+      enable_scroll_switching : true
+      container_shadow:
+        enabled: true
+        color: "#000000"
+        offset: [0, 1]
+        radius: 2
+      btn_shadow:
+        enabled: true
+        color: "#000000"
+        offset: [0, 1]
+        radius: 2
+      label_shadow:
+        enabled: true
+        color: "#000000"
+        offset: [0, 1]
+        radius: 2
+  microphone:
+    type: "yasb.microphone.MicrophoneWidget"
+    options:
+      label: "<span>{icon}</span>"
+      label_alt: "<span>{icon}</span> {level}%"
+      icons:
+        normal: "\uf130"
+        muted: "\uf131"
+      callbacks:
+        on_left: "toggle_mute"
+        on_middle: "toggle_label"
+        on_right: "exec cmd.exe /c start ms-settings:sound"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+  libre_gpu:
+    type: "yasb.libre_monitor.LibreHardwareMonitorWidget"
+    options:
+      label: "<span>\udb82\udcae </span> {info[value]}{info[unit]}"
+      label_alt: "<span>\uf437 </span>{info[histogram]} {info[value]} ({info[min]}/{info[max]}) {info[unit]}"
+      sensor_id: "/gpu-nvidia/0/temperature/2"
+      update_interval: 1000
+      precision: 1
+      histogram_num_columns: 10
+      class_name: "libre-monitor-widget"
+
+      history_size: 60
+      histogram_icons:
+        - '\u2581' # 0%
+        - '\u2581' # 10%
+        - '\u2582' # 20%
+        - '\u2583' # 30%
+        - '\u2584' # 40%
+        - '\u2585' # 50%
+        - '\u2586' # 60%
+        - '\u2587' # 70%
+        - '\u2588' # 80%+
+
+      # histogram_fixed_min: 0.0
+      # histogram_fixed_max: 100.0
+
+      # server_host: "localhost"
+      # server_port: 8085
+      # server_username: "admin"
+      # server_password: "password"
+
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "toggle_menu"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+      libre_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "right"
+        direction: "up"
+        offset_top: 6
+        offset_left: 0
+        header_label: "YASB Hardware Monitor"
+        precision: 1
+        columns: 1
+        sensors:
+          - id: "/intelcpu/0/temperature/8"
+            name: "CPU Temp"
+          - id: "/intelcpu/0/load/0"
+            name: "CPU Load"
+          - id: "/intelcpu/0/power/0"
+            name: "CPU Package Power"
+          - id: "/intelcpu/0/power/1"
+            name: "CPU Core Power"
+          - id: "/gpu-nvidia/0/temperature/0"
+            name: "Nvidia Temp"
+          - id: "/lpc/it8689e/0/fan/0"
+            name: "CPU Fan"
+          - id: "/lpc/it8689e/0/fan/1"
+            name: "System Fan"
+  libre_gpu_load:
+    type: "yasb.libre_monitor.LibreHardwareMonitorWidget"
+    options:
+      label: "<span>\udb82\udcae </span> {info[value]}{info[unit]}"
+      label_alt: "<span>\uf437 </span>{info[histogram]} {info[value]} ({info[min]}/{info[max]}) {info[unit]}"
+      sensor_id: "/gpu-nvidia/0/load/0"
+      update_interval: 1000
+      precision: 2
+      histogram_num_columns: 10
+      class_name: "libre-monitor-widget"
+
+      history_size: 60
+      histogram_icons:
+        - '\u2581' # 0%
+        - '\u2581' # 10%
+        - '\u2582' # 20%
+        - '\u2583' # 30%
+        - '\u2584' # 40%
+        - '\u2585' # 50%
+        - '\u2586' # 60%
+        - '\u2587' # 70%
+        - '\u2588' # 80%+
+
+      # histogram_fixed_min: 0.0
+      # histogram_fixed_max: 100.0
+
+      # server_host: "localhost"
+      # server_port: 8085
+      # server_username: "admin"
+      # server_password: "password"
+
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "toggle_menu"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+      libre_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "right"
+        direction: "up"
+        offset_top: 6
+        offset_left: 0
+        header_label: "YASB Hardware Monitor"
+        precision: 1
+        columns: 1
+        sensors:
+          - id: "/intelcpu/0/temperature/8"
+            name: "CPU Temp"
+          - id: "/intelcpu/0/load/0"
+            name: "CPU Load"
+          - id: "/intelcpu/0/power/0"
+            name: "CPU Package Power"
+          - id: "/intelcpu/0/power/1"
+            name: "CPU Core Power"
+          - id: "/gpu-nvidia/0/temperature/0"
+            name: "Nvidia Temp"
+          - id: "/lpc/it8689e/0/fan/0"
+            name: "CPU Fan"
+          - id: "/lpc/it8689e/0/fan/1"
+            name: "System Fan"
+  libre_cpu:
+    type: "yasb.libre_monitor.LibreHardwareMonitorWidget"
+    options:
+      label: "<span>\uf4bc </span> {info[value]}{info[unit]}"
+      label_alt: "<span>\uf437 </span>{info[histogram]} {info[value]} ({info[min]}/{info[max]}) {info[unit]}"
+      sensor_id: "/intelcpu/0/temperature/16"
+      update_interval: 1000
+      precision: 1
+      histogram_num_columns: 10
+      class_name: "libre-monitor-widget"
+
+      history_size: 60
+      histogram_icons:
+        - '\u2581' # 0%
+        - '\u2581' # 10%
+        - '\u2582' # 20%
+        - '\u2583' # 30%
+        - '\u2584' # 40%
+        - '\u2585' # 50%
+        - '\u2586' # 60%
+        - '\u2587' # 70%
+        - '\u2588' # 80%+
+
+      # histogram_fixed_min: 0.0
+      # histogram_fixed_max: 100.0
+
+      # server_host: "localhost"
+      # server_port: 8085
+      # server_username: "admin"
+      # server_password: "password"
+
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "toggle_menu"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [ 1, 1 ]
+      libre_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "right"
+        direction: "up"
+        offset_top: 6
+        offset_left: 0
+        header_label: "YASB Hardware Monitor"
+        precision: 1
+        columns: 1
+        sensors:
+          - id: "/intelcpu/0/temperature/8"
+            name: "CPU Temp"
+          - id: "/intelcpu/0/load/0"
+            name: "CPU Load"
+          - id: "/intelcpu/0/power/0"
+            name: "CPU Package Power"
+          - id: "/intelcpu/0/power/1"
+            name: "CPU Core Power"
+          - id: "/gpu-nvidia/0/temperature/0"
+            name: "Nvidia Temp"
+          - id: "/lpc/it8689e/0/fan/0"
+            name: "CPU Fan"
+          - id: "/lpc/it8689e/0/fan/1"
+            name: "System Fan"
+  win_button:
+      type: "yasb.custom.CustomWidget"
+      options:
+        label: "\ue62a"
+        label_alt: "\ue62a"
+        class_name: "system-widget"
+        callbacks:
+          on_left: "exec start_menu"
