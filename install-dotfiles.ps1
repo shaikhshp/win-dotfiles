@@ -1,31 +1,33 @@
+# install-dotfiles.ps1
+
 # 1. Install JetBrainsMono Nerd Font
 Write-Host "Installing JetBrainsMono Nerd Font..."
-winget install --id=DEVCOM.JetBrainsMonoNerdFont -e  # :contentReference[oaicite:0]{index=0}
+winget install --id=DEVCOM.JetBrainsMonoNerdFont -e
 
 # 2. Install LibreHardwareMonitor
 Write-Host "Installing LibreHardwareMonitor..."
-winget install --id=LibreHardwareMonitor.LibreHardwareMonitor -e  # :contentReference[oaicite:1]{index=1}
+winget install --id=LibreHardwareMonitor.LibreHardwareMonitor -e
 
-# 3. Install whkd (hotkey daemon)
+# 3. Install WHKD (hotkey daemon)
 Write-Host "Installing whkd..."
-winget install --id=LGUG2Z.whkd -e  # :contentReference[oaicite:2]{index=2}
+winget install --id=LGUG2Z.whkd -e
 
 # 4. Install YASB (Yet Another Status Bar)
 Write-Host "Installing YASB..."
-winget install --id=AmN.yasb -e  # :contentReference[oaicite:3]{index=3}
+winget install --id=AmN.yasb -e
 
-# 5. Install komorebi (tiling window manager)
+# 5. Install Komorebi (tiling window manager)
 Write-Host "Installing komorebi..."
-winget install --id=LGUG2Z.komorebi -e  # :contentReference[oaicite:4]{index=4}
+winget install --id=LGUG2Z.komorebi -e
 
 # 6. Prepare config directories
-$homedir        = [Environment]::GetFolderPath("UserProfile")
-$configDir   = Join-Path $homedir ".config"
-$yasbDir     = Join-Path $configDir "yasb"
+$homedir      = [Environment]::GetFolderPath("UserProfile")
+$configDir = Join-Path $homedir ".config"
+$yasbDir   = Join-Path $configDir "yasb"
 
 # Ensure the directories exist
-New-Item -ItemType Directory -Path $configDir -Force   | Out-Null
-New-Item -ItemType Directory -Path $yasbDir   -Force   | Out-Null
+New-Item -ItemType Directory -Path $configDir -Force  | Out-Null
+New-Item -ItemType Directory -Path $yasbDir  -Force  | Out-Null
 
 # 7. Move komorebi.json into ~/.config/
 if (Test-Path ".\komorebi.json") {
@@ -54,6 +56,14 @@ if (Test-Path ".\whkdrc") {
     Write-Host "Moved whkdrc to $configDir"
 } else {
     Write-Warning "whkdrc not found in repo root."
+}
+
+# 10. Move styles.css into ~/.config/yasb/
+if (Test-Path ".\styles.css") {
+    Move-Item ".\styles.css" $yasbDir -Force
+    Write-Host "Moved styles.css to $yasbDir"
+} else {
+    Write-Warning "styles.css not found in repo root."
 }
 
 Write-Host "Setup complete."
