@@ -26,7 +26,7 @@ bars:
     blur_effect:
       enabled: true
       acrylic: false
-      dark_mode: true
+      dark_mode: false
       round_corners: true
       border_color: System
     window_flags:
@@ -67,7 +67,7 @@ bars:
     blur_effect:
       enabled: true
       acrylic: false
-      dark_mode: true
+      dark_mode: false
       round_corners: true
       border_color: System
     window_flags:
